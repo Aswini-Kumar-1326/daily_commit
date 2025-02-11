@@ -1,0 +1,28 @@
+# .github/workflows/daily_commit.yml
+
+name: Daily Commit
+
+on:
+  schedule:
+    - cron: "0 0 * * *"  # Runs daily at 00:00 UTC (adjust as needed)
+
+jobs:
+  daily_update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Add daily update
+        run: |
+          echo "Daily update $(date)" >> daily_updates.txt
+          git add daily_updates.txt
+
+      - name: Commit changes (aswini.kumar@straive.com)
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Automated daily update"
+          file_pattern: daily_updates.txt
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Optional: You can specify the branch if needed.
+          # branch: main  # Or your branch name
